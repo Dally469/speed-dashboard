@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 const serviceStore = useCheckServiceStore();
 onMounted(async () => {
-  await serviceStore.checkServiceStatus();
+  // await serviceStore.checkServiceStatus();
 });
 </script>
 

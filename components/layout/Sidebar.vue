@@ -35,7 +35,7 @@ function activeSubLink(title: any) {
 }
 
 onMounted(() => {
-  sidebarStore.getSystemMenus();
+  // sidebarStore.getSystemMenus();
 });
 
 const MENUS = ref([
@@ -78,12 +78,12 @@ const MENUS = ref([
       {
         icon: "hugeicons:message-add-01",
         title: "Ride Report",
-        url: "/dashboard/reports/ride",
+        url: "#",
       },
       {
         icon: "hugeicons:message-add-01",
         title: "Courier Report",
-        url: "/dashboard/reports/courier",
+        url: "#",
       },
     ],
   },
@@ -91,13 +91,13 @@ const MENUS = ref([
   {
     icon: "pi pi-arrow-right-arrow-left",
     title: "Transactions",
-    url: "/dashboard/transactions",
+    url: "#",
     expanded: false,
   },
   {
     icon: "pi pi-money-bill",
     title: "Payment Details",
-    url: "/dashboard/transactions",
+    url: "#",
     expanded: false,
   },
 ]);

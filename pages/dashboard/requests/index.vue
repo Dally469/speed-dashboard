@@ -38,7 +38,7 @@
     <div class="card">
       <DataTable
         v-model:selection="selectedEntry"
-        :value="prizesHistoryItems"
+        :value="requestItems"
         dataKey="id"
         tableStyle="min-width: 50rem"
         stripedRows
@@ -101,20 +101,42 @@
           <template #body="{ data }">
             <div class="flex flex-col">
               <span class="text-surface-700 dark:text-surface-0"
-                >{{ data.fname + " " + data.lname }}
+                >{{ data.client.fname + " " + data.client.lname }}
               </span>
               <span class="text-surface-300 text-xs dark:text-surface-0"
-                >{{ data.phone }} Phone
+                >{{ data.client.phone }}
               </span>
             </div>
           </template></Column
         >
-        <Column field="motorBiker" header="DRIVER">
+        <Column class="w-60" field="motorBiker" header="DRIVER & VEHICLE">
           <template #body="{ data }">
-            <div class="flex flex-col">
-              <span class="text-surface-700 dark:text-surface-0"
-                >{{ data.fname + " " + data.lname }}
-              </span>
+            <div class="flex gap-x-3 items-center">
+              <div class="flex flex-col">
+                <span class="text-surface-700 text-nowrap dark:text-surface-0"
+                  >{{ data.motorBiker.fname + " " + data.motorBiker.lname }}
+                </span>
+                <span class="text-surface-300 text-xs dark:text-surface-0"
+                  >{{ data.motorBiker.phone }}
+                </span>
+              </div>
+              <div
+                class="flex items-center space-x-2 bg-slate-100 py-1.5 px-2 rounded-lg"
+              >
+                <span
+                  class="pi pi-truck text-surface-700 dark:text-surface-0 text-2xl"
+                >
+                </span>
+                <div class="flex flex-col">
+                  <span
+                    class="text-surface-700 text-[10px] font-semibold text-nowrap dark:text-surface-0"
+                    >{{ data.motorBiker.motorType }}
+                  </span>
+                  <span class="text-warn text-xs font-light"
+                    >{{ data.motorBiker.plateNumber }}
+                  </span>
+                </div>
+              </div>
             </div>
           </template></Column
         >
@@ -188,14 +210,14 @@ const home = ref({
 });
 const items = ref([{ label: "Pessengers Requests" }]);
 
-const mainStore = useMainStore()
+const mainStore = useMainStore();
 const toast = useToast();
 const selectRow = (data: any, option: any) => {
-  console.log(option);
+  console.log(data);
   if (option.id == 1) {
     navigateTo("/dashboard/requests/" + data.id);
   } else if (option.id == 2) {
-    mainStore.setPassengerModal(true);
+    mainStore.setRequestModal(true);
   } else {
     toast.add({
       severity: "info",
@@ -208,18 +230,16 @@ const selectRow = (data: any, option: any) => {
 const visible = ref(false);
 const selectedEntry = ref<any>([]);
 
-const prizeStore = usePrizeStore();
-const prizeTab = computed(() => {
-  return prizeStore.prizeTab;
+const requestStore = useRequestStore();
+
+const requestItems = computed(() => {
+  return requestStore.requests;
 });
-const prizesItems = computed(() => {
-  return prizeStore.prizes;
-});
-const prizesHistoryItems = computed(() => {
-  return prizeStore.histories;
+const singleRequest = computed(() => {
+  return requestStore.requestSingle;
 });
 const loading = computed(() => {
-  return prizeStore.loading;
+  return requestStore.loading;
 });
 const formatDate = (value: any) => {
   return value.toLocaleDateString("en-US", {
@@ -233,8 +253,7 @@ const formatCurrency = (value: any) => {
 };
 
 onMounted(() => {
-  prizeStore.getAllPrizes();
-  prizeStore.getAllHistoryPrizeDistribution();
+  requestStore.getAllrequests();
 });
 
 const dates = ref();

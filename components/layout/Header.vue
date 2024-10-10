@@ -40,7 +40,7 @@
           />
           <div class="flex flex-col justify-start items-start mr-3">
             <div class="font-semibold text-sm">{{ fullname }}</div>
-            <div class="font-light text-xs">{{ user.role }}</div>
+            <div class="font-light text-xs">{{ user[0].userRole }}</div>
           </div>
 
           <i class="pi pi-chevron-down pl-4"></i>
@@ -99,11 +99,11 @@ const user = computed(() => {
 });
 
 const fullname = computed(() => {
-  return user.value.firstname + " " + user.value.lastname || "User";
+  return user.value[0].username;
 });
 
 const smsBalance = computed(() => {
-  return thirdPartyStore.balance;
+  return 30;
 })
 const op = ref();
 const settingMenu = ref([
@@ -125,7 +125,7 @@ const toggle = (event: any) => {
 };
 
 onMounted(() =>{
-  thirdPartyStore.checkSMSBalance()
+  // thirdPartyStore.checkSMSBalance()
 })
 </script>
 

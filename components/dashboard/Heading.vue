@@ -70,7 +70,7 @@ const user = computed(() => {
 });
 
 const fullname = computed(() => {
-  return user.value.firstname + " " + user.value.lastname || "User";
+  return user.value[0].username
 });
 </script>
 
