@@ -77,12 +77,18 @@
 <script lang="ts" setup>
 import { object, string, number, date, type InferType, boolean } from "yup";
 
-const prizeStore = usePrizeStore();
+const store = usePassengerStore();
 const mainStore = useMainStore();
+
+const passenger = computed(() => {
+  return store.passenger;
+});
+
 const formState = reactive({
-  fname: "",
+  fname:   "",
   lname: "",
   phone: "",
+  status: "ACTIVE"
   
 });
 const errors = reactive({
@@ -102,8 +108,10 @@ const prizeSchema = object({
 const passengerModal = computed(() => {
   return mainStore.passengerModal;
 });
+
+
 const loading = computed(() => {
-  return prizeStore.loading;
+  return store.loading;
 });
 
 const onSubmit = async () => {
@@ -117,7 +125,7 @@ const onSubmit = async () => {
     await prizeSchema.validate(formState, { abortEarly: false });
 
     // If validation passes, call login action from the auth store
-    await prizeStore.AddPrize(formState);
+    await store.CreatePassenger(formState);
   } catch (validationError) {
     // Handle validation errors
     validationError.inner.forEach((error: any) => {
@@ -126,13 +134,11 @@ const onSubmit = async () => {
   }
 };
 
-const categories = computed(() => {
-  return prizeStore.prizeCategoryies;
-});
+ 
 
 onMounted(() => {
   // Fetch categories from the store
-  prizeStore.getAllPrizeCategories();
+  // prizeStore.getAllPrizeCategories();
 });
 
 const value = ref("Histories");

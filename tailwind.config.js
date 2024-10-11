@@ -31,6 +31,11 @@ export default {
           DEFAULT: "#c82333",
           dark: "#bd2130",
         },
+        warning: {
+          light: "#fb8500",
+          DEFAULT: "#fb8500",
+          dark: "#fb8500",
+        },
         sidebar: {
           light: "#F9F9F9",
           DEFAULT: "#F9F9F9",

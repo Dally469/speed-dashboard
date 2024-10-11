@@ -96,7 +96,7 @@
         <template #empty> No driver found. </template>
         <template #loading> <div class="loader"></div> </template>
         <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-        <Column field="id" header="REQUEST ID"></Column>
+        <Column field="id" header="ID"></Column>
         <Column field="client" header="PASSENGER">
           <template #body="{ data }">
             <div class="flex flex-col">
@@ -109,9 +109,9 @@
             </div>
           </template></Column
         >
-        <Column class="w-60" field="motorBiker" header="DRIVER & VEHICLE">
+        <Column class="w-68" field="motorBiker" header="DRIVER & VEHICLE">
           <template #body="{ data }">
-            <div class="flex gap-x-3 items-center">
+            <div class="flex gap-x-4 items-center">
               <div class="flex flex-col">
                 <span class="text-surface-700 text-nowrap dark:text-surface-0"
                   >{{ data.motorBiker.fname + " " + data.motorBiker.lname }}
@@ -155,7 +155,7 @@
         <Column field="status" header="Status">
           <template #body="{ data }">
             <div
-              class="rounded-full flex px-4 py-1.5 text-sm text-center items-center justify-center text-primary bg-primary/10"
+              class="rounded-full flex px-4 py-1.5 text-sm text-center items-center justify-center " :class="statusColor(data.status)"
             >
               {{ data.status }}
             </div>
@@ -252,6 +252,18 @@ const formatCurrency = (value: any) => {
   return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
 };
 
+const statusColor = (value: any) => {
+  if (value === "PENDING") {
+    return " text-warning bg-warning/10";
+  } else if (value == "COMPLETED") {
+    return " text-primary bg-primary/10  ";
+  } else if (value == "REJECTED") {
+    return " text-error bg-error/10";
+  } else {
+    return " text-card bg-card/10";
+  }
+};
+
 onMounted(() => {
   requestStore.getAllrequests();
 });
@@ -287,11 +299,6 @@ const toggleRowOption = (event: any) => {
 const selectMember = (member: any) => {
   selectedMotor.value = member;
   op.value.hide();
-};
-
-const viewDetails = (member: any) => {
-  console.log(member);
-  rowOp.value.hide();
 };
 </script>
 

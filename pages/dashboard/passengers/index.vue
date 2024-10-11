@@ -179,12 +179,15 @@ const home = ref({
 });
 const items = ref([{ label: "Passengers" }]);
 const mainStore = useMainStore();
+const passengerStore = usePassengerStore();
+
 const toast = useToast();
 const selectRow = (data: any, option: any) => {
   console.log(option);
   if (option.id == 1) {
     navigateTo("/dashboard/passengers/" + data.id);
   } else if (option.id == 2) {
+    passengerStore.setPassenger(data)
     mainStore.setPassengerModal(true);
   } else {
     toast.add({
@@ -198,7 +201,6 @@ const selectRow = (data: any, option: any) => {
 const visible = ref(false);
 const selectedPassengers = ref<any>([]);
 
-const passengerStore = usePassengerStore();
 
 const passengerItems = computed(() => {
   return passengerStore.passengers;

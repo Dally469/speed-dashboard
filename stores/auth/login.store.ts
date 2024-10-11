@@ -57,7 +57,7 @@ export const useAuthStore = defineStore("authStore", () => {
   const checkToken = async () => {
     setLoading(true);
     await httpRequest
-      .get("/auth/api/v1/profile")
+      .get("/api/admins/1")//Add logger ID
       .then((res) => {
         setUser(res.data);
       })

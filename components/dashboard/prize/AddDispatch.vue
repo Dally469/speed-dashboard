@@ -26,10 +26,10 @@
       </template>
       <form
         @submit.prevent="onSubmit"
-        class="w-full lg:px-4 max-sm:px-2 space-y-2"
+        class="w-full  lg:px-4 max-sm:px-2 space-y-2"
       >
-        <div class="flex flex-col gap-1">
-          <small for="username">Prize category</small>
+        <div class="flex lg:hidden flex-col gap-1">
+          <small for="username">CDRIVER</small>
           <Select
             v-model="formState.category"
             :options="categories"
@@ -44,28 +44,28 @@
             {{ errors.category }}</small
           >
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="flex lg:hidden flex-col gap-1">
           <small for="username">Prize Name (optional)</small>
           <InputText v-model="formState.title" class="w-full" />
           <small class="text-red-500" v-if="errors.title">
             {{ errors.title }}</small
           >
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="flex lg:hidden flex-col gap-1">
           <small for="username">Prize Value in RWF</small>
           <InputText v-model="formState.valueInRwf" class="w-full" />
           <small class="text-red-500" v-if="errors.valueInRwf">
             {{ errors.valueInRwf }}</small
           >
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="flex  lg:hidden flex-col gap-1">
           <small for="username">Elligibility (Available Prizes)</small>
           <InputText v-model="formState.elligibility" class="w-full" />
           <small class="text-red-500" v-if="errors.elligibility">
             {{ errors.elligibility }}</small
           >
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="flex lg:hidden flex-col gap-1">
           <small for="username">Distribution</small>
           <InputText v-model="formState.distribution" class="w-full" />
           <small class="text-red-500" v-if="errors.distribution">
