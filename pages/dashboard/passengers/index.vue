@@ -37,7 +37,7 @@
 
     <div class="card">
       <DataTable
-        v-model:selection="selectedPassengers"
+         
         :value="passengerItems"
         dataKey="id"
         tableStyle="min-width: 50rem"
@@ -51,21 +51,13 @@
           <div class="flex justify-between py-2">
             <div class="text-2xl font-semibold">List of Passengers</div>
             <div class="flex gap-x-4">
-              <DatePicker
-                v-model="dates"
-                selectionMode="range"
-                dateFormat="dd/mm/yy"
-                :manualInput="false"
-                placeholder="Select Date Range"
-                iconDisplay="input"
-                showIcon
-              />
+              
               <Button
                 severity="secondary"
                 outlined
-                :label="selectedMotor ? selectedMotor.title : 'Filters'"
+                :label="selectedMotor ? selectedMotor.title : 'Filter By Status'"
                 @click="toggle"
-                class="min-w-40"
+               
                 icon="pi pi-sliders-h"
               />
               <Popover ref="op">
@@ -96,7 +88,7 @@
         <template #empty> No driver found. </template>
         <template #loading> <div class="loader"></div> </template>
         <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-        <Column field="id" class="w-40" header="PASSENGER ID"></Column>
+        <!-- <Column field="id" class="w-40" header="PASSENGER ID"></Column> -->
         <Column field="fname" header="FIRST NAME">
           <template #body="{ data }">
             <div class="flex flex-col">
@@ -130,35 +122,33 @@
             </div>
           </template></Column
         >
-        <Column class="w-24 !text-end">
+        <Column class="  !text-end">
           <template #body="{ data }">
+            <div class="flex items-center justify-center gap-x-4">
+ 
+
             <Button
-              icon="pi pi-ellipsis-v"
+              icon="pi pi-eye"
               severity="secondary"
               text
-              rounded
-              @click="toggleRowOption"
+               @click="updateRow(data)"
             ></Button>
-            <Popover ref="rowOp">
-              <div class="flex flex-col w-28 gap-2">
-                <div>
-                  <ul class="list-none p-0 m-0 flex flex-col">
-                    <li
-                      v-for="item in rowOptions"
-                      :key="item.title"
-                      class="flex items-center px-2 py-0.5 group hover:bg-card cursor-pointer rounded-lg"
-                      @click="selectRow(data, item)"
-                    >
-                      <div>
-                        <span class="font-normal text-sm">{{
-                          item.title
-                        }}</span>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </Popover>
+             <Button
+              icon="pi pi-user-edit"
+              severity="info"
+               text
+               @click="updateRow(data)"
+            ></Button>
+            <Button
+              icon="pi pi-trash"
+              severity="danger"
+               text
+               @click="deleteRow(data)"
+            ></Button>
+            </div>
+          
+            
+            
           </template>
         </Column>
       </DataTable>
@@ -182,20 +172,17 @@ const mainStore = useMainStore();
 const passengerStore = usePassengerStore();
 
 const toast = useToast();
-const selectRow = (data: any, option: any) => {
+const selectRow = (option: any) => {
+
+  
   console.log(option);
   if (option.id == 1) {
-    navigateTo("/dashboard/passengers/" + data.id);
+    // navigateTo("/dashboard/passengers/" + data.id);
   } else if (option.id == 2) {
-    passengerStore.setPassenger(data)
-    mainStore.setPassengerModal(true);
+     mainStore.setPassengerModal(true);
+    passengerStore.setUpdating(true)
   } else {
-    toast.add({
-      severity: "info",
-      summary: data.customer,
-      detail: data.phone + " | RB" + data.code,
-      life: 3000,
-    });
+     
   }
 };
 const visible = ref(false);
@@ -208,16 +195,7 @@ const passengerItems = computed(() => {
 const loading = computed(() => {
   return passengerStore.loading;
 });
-const formatDate = (value: any) => {
-  return value.toLocaleDateString("en-US", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-};
-const formatCurrency = (value: any) => {
-  return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
-};
+ 
 
 onMounted(() => {
   passengerStore.getAllPassengers();
@@ -228,10 +206,9 @@ const op = ref();
 const rowOp = ref();
 const selectedMotor = ref<MotorType>();
 const motors = ref([
-  { id: 1, title: "BIKE" },
-  { id: 2, title: "TAXI CAB" },
-  { id: 3, title: "RIFAN" },
-  { id: 4, title: "TRUCK" },
+  { id: 1, title: "ACTIVE" },
+  { id: 2, title: "UNACTIVE" },
+ 
 ]);
 
 const rowOptions = ref([
@@ -248,18 +225,23 @@ const toggle = (event: any) => {
   op.value.toggle(event);
 };
 
-const toggleRowOption = (event: any) => {
-  rowOp.value.toggle(event);
+const updateRow = (data: any) => {
+  console.log(data)
+  passengerStore.setPassenger(data)
+  mainStore.setUpdateModal(true);
+  passengerStore.setUpdating(true)
 };
 const selectMember = (member: any) => {
   selectedMotor.value = member;
   op.value.hide();
 };
 
-const viewDetails = (member: any) => {
-  console.log(member);
-  rowOp.value.hide();
-};
+
+const deleteRow = (data: any) => {
+  console.log(data)
+  passengerStore.setPassenger(data)
+    mainStore.setDeleteModal(true);
+ };
 </script>
 
 <style></style>

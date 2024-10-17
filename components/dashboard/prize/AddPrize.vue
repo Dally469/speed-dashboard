@@ -174,7 +174,7 @@ const categories = computed(() => {
 
 onMounted(() => {
   // Fetch categories from the store
-  prizeStore.getAllPrizeCategories();
+  // prizeStore.getAllPrizeCategories();
 });
 
 const value = ref("Histories");

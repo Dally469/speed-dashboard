@@ -96,7 +96,7 @@
         <template #empty> No driver found. </template>
         <template #loading> <div class="loader"></div> </template>
         <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-        <Column field="id" header="DRIVER ID"></Column>
+        <!-- <Column field="id" header="DRIVER ID"></Column> -->
         <Column field="fname" header="DRIVER">
           <template #body="{ data }">
             <div class="flex flex-col">
@@ -148,33 +148,29 @@
         >
         <Column class="w-24 !text-end">
           <template #body="{ data }">
+             <div class="flex items-center justify-center gap-x-4">
+ 
+
             <Button
-              icon="pi pi-ellipsis-v"
+              icon="pi pi-eye"
               severity="secondary"
               text
-              rounded
-              @click="toggleRowOption"
+               @click="viewRow(data)"
             ></Button>
-            <Popover ref="rowOp">
-              <div class="flex flex-col w-28 gap-2">
-                <div>
-                  <ul class="list-none p-0 m-0 flex flex-col">
-                    <li
-                      v-for="item in rowOptions"
-                      :key="item.title"
-                      class="flex items-center px-2 py-0.5 group hover:bg-card cursor-pointer rounded-lg"
-                      @click="selectRow(data, item)"
-                    >
-                      <div>
-                        <span class="font-normal text-sm">{{
-                          item.title
-                        }}</span>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </Popover>
+             <Button
+              icon="pi pi-user-edit"
+              severity="info"
+               text
+               @click="updateRow(data)"
+            ></Button>
+            <Button
+              icon="pi pi-trash"
+              severity="danger"
+               text
+               @click="deleteRow(data)"
+            ></Button>
+            </div>
+          
           </template>
         </Column>
       </DataTable>
@@ -196,23 +192,6 @@ const home = ref({
 });
 const items = ref([{ label: "Drivers" }]);
 
-const toast = useToast();
-const selectRow = (data: any, option: any) => {
-  console.log(option);
-  if (option.id == 1) {
-    navigateTo("/dashboard/drivers/" + data.id);
-  } else if (option.id == 2) {
-    mainStore.setDriverModal(true);
-  } else {
-    toast.add({
-      severity: "info",
-      summary: data.customer,
-      detail: data.phone + " | RB" + data.code,
-      life: 3000,
-    });
-  }
-};
-const visible = ref(false);
 const selectedEntry = ref<any>([]);
 
 const driverStore = useDriverStore();
@@ -224,17 +203,7 @@ const driverItems = computed(() => {
 const loading = computed(() => {
   return driverStore.loading;
 });
-const formatDate = (value: any) => {
-  return value.toLocaleDateString("en-US", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-};
-const formatCurrency = (value: any) => {
-  return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
-};
-
+ 
 onMounted(() => {
   driverStore.getAllDrivers();
  });
@@ -260,18 +229,18 @@ const selectMember = (member: any) => {
   selectedMotor.value = member;
   op.value.hide();
 };
-const rowOp = ref();
-
-const rowOptions = ref([
-  {
-    id: 1,
-    title: "View Details",
-  },
-  { id: 2, title: "Update " },
-  { id: 3, title: "Delete" },
-]);
-const toggleRowOption = (event: any) => {
-  rowOp.value.toggle(event);
+ 
+const viewRow = (data: any) => {
+  driverStore.setDriver(data)
+  mainStore.setDriverModal(true)
+};
+const updateRow = (data: any) => {
+  driverStore.setDriver(data)
+  mainStore.setUpdateModal(true)
+};
+const deleteRow = (data: any) => {
+  driverStore.setDriver(data)
+  mainStore.setDeleteModal(true)
 };
 </script>
 
