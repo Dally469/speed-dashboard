@@ -197,7 +197,7 @@ const selectedEntry = ref<any>([]);
 const driverStore = useDriverStore();
  
 const driverItems = computed(() => {
-  return driverStore.drivers;
+  return driverStore.drivers.slice().sort((a: any, b: any) => b.id - a.id);
 });
  
 const loading = computed(() => {

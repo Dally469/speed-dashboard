@@ -190,7 +190,7 @@ const selectedPassengers = ref<any>([]);
 
 
 const passengerItems = computed(() => {
-  return passengerStore.passengers;
+  return passengerStore.passengers.slice().sort((a: any, b: any) => b.id - a.id);
 });
 const loading = computed(() => {
   return passengerStore.loading;
